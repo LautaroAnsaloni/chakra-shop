@@ -6,21 +6,23 @@ import { Container, Row } from "react-bootstrap";
 const Axios = () => {
   const [product, setProduct] = useState([]);
   const [error, setError] = useState(false);
-
-  const getProducts = async () => {
-    try {
-      const { data } = await axios.get("https://api.storerestapi.com/products");
-      console.log(data);
-      setProduct(data.results);
-      setError(false);
-    } catch (error) {
-      setError(true);
-    }
-  };
+  const [paginador, setPaginador] = useState(1)
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(`https://api.storerestapi.com/products?limit=10&page=1`);
+        console.log(data);
+        setProduct(data.results);
+        setError(false);
+      } catch (error) {
+        setError(true);
+      }
+    }
+    fetchData();
+  }, [])
+
+  
 
   return (
     <Container>
@@ -34,15 +36,21 @@ const Axios = () => {
         )}
       </Row>
       <Row className="g-3 m-auto">
-        {product.map((data) => (
+        {product?.map((d) => (
           <ProductCard
-            key={data.id}
-            id={data.id}
-            name={data.title}
-            image={data.images}
+            key={d.id}
+            id={d.id}
+            name={d.title}
+            image={d.images}
           />
         ))}
       </Row>
+      <Row>
+            <div className="btn-group m-auto my-5 d-flex" role="group" aria-label="Basic example">
+              <button type="button" onClick={() => setPaginador((paginador) => paginador - 1)} className={(paginador - 1) ? "btn btn-outline-warning p-3 text-dark" : "btn btn-danger p-3 disabled"}>Atras</button>
+              <button type="button" onClick={() => setPaginador((paginador) => paginador + 1)} className={(paginador + 1) ? "btn btn-outline-warning p-3 text-dark" : "btn btn-danger p-3 disabled"}>Siguiente</button>
+            </div>
+          </Row>
     </Container>
   );
 };

@@ -1,36 +1,22 @@
-import { Card, CardHeader, CardBody, CardFooter, Divider, Text, Heading, Stack, Image } from '@chakra-ui/react'
-import { Button, ButtonGroup } from 'react-bootstrap';
+import React from 'react'
+import { Button, Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-const ProductCard = ({ title, images, description, price}) => {
+const ProductCard = ({ id, title, image}) => {
+
+    const navigate = useNavigate();
+    const redirectDetails = () => {
+        navigate(`/details/${id}`)
+    }
     return (
-        <Card maxW='sm'>
-        <CardBody>
-          <Image
-            src={images}
-            alt='Green double couch with wooden legs'
-            borderRadius='lg'
-          />
-          <Stack mt='6' spacing='3'>
-            <Heading size='md'>{title}</Heading>
-            <Text>
-              {description}
-            </Text>
-            <Text color='blue.600' fontSize='2xl'>
-              {price}
-            </Text>
-          </Stack>
-        </CardBody>
-        <Divider />
-        <CardFooter>
-          <ButtonGroup spacing='2'>
-            <Button variant='solid' colorScheme='blue'>
-              Buy now
-            </Button>
-            <Button variant='ghost' colorScheme='blue'>
-              Add to cart
-            </Button>
-          </ButtonGroup>
-        </CardFooter>
+        <Card className="text-center mx-2" border="warning" bg="dark" text="light" style={{ width: '18rem' }}>
+        <Card.Body>
+          <Card.Title>{title}</Card.Title>
+          <Card.Img variant="top" src={image} />
+          <Card.Text>
+          </Card.Text>
+          <Button variant="warning" onClick={redirectDetails}>Ver más</Button>
+        </Card.Body>
       </Card>
     );
   };
